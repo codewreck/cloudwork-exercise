@@ -18,4 +18,3 @@ export const cancel = createAction(CANCEL, resolve => (params: { id: number }) =
 
 export const updateStatus = createAction(UPDATE_STATUS, resolve =>
   (params: { id: number, status: Status }) => resolve({ id: params.id, status: params.status }))
-

@@ -1,14 +1,25 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { submit } from '../../state/workloads/actions';
-
+import { created, submit } from '../../state/workloads/actions';
+import { Status } from '../../state/workloads';
+import moment from 'moment';
+import {  WorkloadItemStateProps } from '../WorkloadItem';
+import {  RootState } from '../../state';
 
 interface WorkloadFormDispatchProps {
-  submitWorkload: (complexity: number) => void  
+  submitWorkload: (complexity: number) => void,
+  createWorkload: (id: number, status: Status, complexity: number, completeDate: Date) => void
+
+}
+
+export interface WorkloadFormStateProps {
+  workloads: WorkloadItemStateProps[];
+
 }
 
 interface WorkloadFormProps extends 
+WorkloadFormStateProps,
   WorkloadFormDispatchProps {}
 
 interface WorkloadFormState {
@@ -24,6 +35,12 @@ class WorkloadForm extends React.PureComponent<WorkloadFormProps, WorkloadFormSt
 
   handleSubmit = (e: React.MouseEvent) => {
     this.props.submitWorkload(this.state.complexity);
+    this.setState(this.defaultState);
+    e.preventDefault();
+  }
+
+  handleCreate =(e: React.MouseEvent) => {
+    this.props.createWorkload(this.props.workloads.length + 1,  'WORKING', this.state.complexity,  moment().add(this.state.complexity, 'second').toDate());
     this.setState(this.defaultState);
     e.preventDefault();
   }
@@ -48,7 +65,8 @@ class WorkloadForm extends React.PureComponent<WorkloadFormProps, WorkloadFormSt
         </div>
 
         <div>
-          <button onClick={this.handleSubmit} type="submit">Start work</button>
+          {/* <button onClick={this.handleSubmit} type="submit">Start work</button> */}
+          <button onClick={this.handleCreate} type="submit">Start work</button>
         </div>
       </form>
     );
@@ -56,11 +74,16 @@ class WorkloadForm extends React.PureComponent<WorkloadFormProps, WorkloadFormSt
 }
 
 
-const mapDispatchToProps = (dispatch: Dispatch): WorkloadFormDispatchProps => ({
-  submitWorkload: (complexity: number) => dispatch(submit({ complexity })),
+const mapStateToProps = (state: RootState): WorkloadFormStateProps => ({
+  workloads: Object.values(state.workloads),
 });
 
-const WorkloadFormContainer = connect(null, mapDispatchToProps)(WorkloadForm);
+const mapDispatchToProps = (dispatch: Dispatch): WorkloadFormDispatchProps => ({
+  submitWorkload: (complexity: number) => dispatch(submit({ complexity })),
+  createWorkload: (id: number, status: Status, complexity: number, completeDate: Date ) => dispatch(created({id, status, complexity, completeDate}))
+});
+
+const WorkloadFormContainer = connect(mapStateToProps, mapDispatchToProps)(WorkloadForm);
 
 
 export {

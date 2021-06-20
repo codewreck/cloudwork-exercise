@@ -5,7 +5,7 @@ import * as workloadActions from './actions';
 
 
 export type WorkloadsAction = ActionType<typeof workloadActions>
-
+  
 
 interface WorkloadEntry<Id extends number> {
   id: Id;
@@ -22,6 +22,7 @@ export type WorkloadsState = {
 const initialState: WorkloadsState = {};
 
 export const workloadReducer = (state: WorkloadsState = initialState, action: WorkloadsAction): WorkloadsState => {
+  
   switch (action.type) {
     case getType(workloadActions.created):
       return { 
@@ -33,6 +34,15 @@ export const workloadReducer = (state: WorkloadsState = initialState, action: Wo
           status: action.payload.status,
         },
       };
+
+      case getType(workloadActions.cancel):
+        return {
+          ...state,
+          [action.payload.id]: {
+            ...state[action.payload.id],
+            status: 'CANCELED',
+          },
+        }
       
       case getType(workloadActions.updateStatus):
         return {

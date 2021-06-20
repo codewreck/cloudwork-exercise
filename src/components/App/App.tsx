@@ -11,16 +11,20 @@ class App extends PureComponent {
       <div>
         <h1>CloudWork</h1>
         <hr />
-        
-        <div >
+        <div style={{display: 'flex'}}>
+
+
+        <div style={{flexBasis: 0, flexGrow: 1}} >
           <WorkloadFormContainer />
         </div>
-        <hr />
+        {/* <hr /> */}
 
-        <div>
+        <div style={{flexBasis: 0, flexGrow: 1}}>
           <h2>Workloads</h2>
           <WorkloadListContainer />
         </div>
+        </div>
+     
       </div>
     );
   }
