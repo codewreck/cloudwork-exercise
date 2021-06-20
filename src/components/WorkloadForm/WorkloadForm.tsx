@@ -2,20 +2,19 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { created, submit } from '../../state/workloads/actions';
-import { Status } from '../../state/workloads';
+import { Status, WorkloadService } from '../../state/workloads';
 import moment from 'moment';
 import {  WorkloadItemStateProps } from '../WorkloadItem';
 import {  RootState } from '../../state';
 
+
 interface WorkloadFormDispatchProps {
   submitWorkload: (complexity: number) => void,
   createWorkload: (id: number, status: Status, complexity: number, completeDate: Date) => void
-
 }
 
 export interface WorkloadFormStateProps {
   workloads: WorkloadItemStateProps[];
-
 }
 
 interface WorkloadFormProps extends 
@@ -34,7 +33,7 @@ class WorkloadForm extends React.PureComponent<WorkloadFormProps, WorkloadFormSt
   state = this.defaultState;
 
   handleSubmit = (e: React.MouseEvent) => {
-    this.props.submitWorkload(this.state.complexity);
+    this.props.submitWorkload(this.state.complexity)
     this.setState(this.defaultState);
     e.preventDefault();
   }
@@ -47,6 +46,7 @@ class WorkloadForm extends React.PureComponent<WorkloadFormProps, WorkloadFormSt
 
   render() {
     return (
+      <div style={{border: '1px solid #5200F5', padding: '12px', maxWidth: '240px'}}>
       <form>
         <h2>Create workload</h2>
         
@@ -55,20 +55,22 @@ class WorkloadForm extends React.PureComponent<WorkloadFormProps, WorkloadFormSt
             Complexity: {this.state.complexity}
             <br />
             <input 
+            style={{width: '100%'}}
               value={this.state.complexity} 
               onChange={(e) => this.setState({ complexity: Number(e.target.value) })} 
               type="range" 
-              min="1" 
+              min="1"
               max="10" 
             />
           </label>
         </div>
 
-        <div>
+        <div style={{marginBottom: '12px', marginTop: '16px'}}>
           {/* <button onClick={this.handleSubmit} type="submit">Start work</button> */}
-          <button onClick={this.handleCreate} type="submit">Start work</button>
+          <button onClick={this.handleCreate} type="submit" style={{padding: '8px 10px', backgroundColor: '#5200F5', color: 'white', cursor: 'pointer'}}>Start work</button>
         </div>
       </form>
+      </div>
     );
   }
 }

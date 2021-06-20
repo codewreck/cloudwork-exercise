@@ -2,11 +2,12 @@ import { ActionType, getType } from 'typesafe-actions';
 
 import { Status } from './types';
 import * as workloadActions from './actions';
+import { WorkloadService } from './services';
 
 
 export type WorkloadsAction = ActionType<typeof workloadActions>
   
-
+const WorkloadServiceObj = new WorkloadService
 interface WorkloadEntry<Id extends number> {
   id: Id;
   complexity: number;
@@ -22,7 +23,6 @@ export type WorkloadsState = {
 const initialState: WorkloadsState = {};
 
 export const workloadReducer = (state: WorkloadsState = initialState, action: WorkloadsAction): WorkloadsState => {
-  
   switch (action.type) {
     case getType(workloadActions.created):
       return { 
@@ -57,3 +57,5 @@ export const workloadReducer = (state: WorkloadsState = initialState, action: Wo
         return state;
   }
 }
+
+

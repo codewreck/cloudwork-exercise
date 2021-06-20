@@ -27,19 +27,42 @@ const WorkloadItem: React.SFC<WorkloadItemProps> = (props) => {
     parseInt(moment(props.completeDate).format("x")) -
     parseInt(moment().format("x"));
 
-  setTimeout(() => {
+ const number = setTimeout(() => {
     if(props.status === 'WORKING')
     props.onUpdate()
     // updateStatus
   }, timeOut);
+
+  
   return (
-    <div className="WorkloadItem">
+    <div className="WorkloadItem" style={{display: 'flex',justifyContent: 'space-between', alignItems: 'center', }}>
       <div>
-        <h3 className="WorkloadItem-heading">Workload #{props.id}</h3>
+        <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Workload #{props.id}</div>
         <span className="WorkloadItem-subHeading">
           Complexity: {props.complexity}
         </span>
-        <div
+       
+        {/* <span className="WorkloadItem-subHeading">Status: </span> */}
+      </div>
+      <div>
+        {props.status === "WORKING" ? (
+          <div style={{display: 'flex', alignItems: 'center'}}>
+            <div style={{paddingRight: '3px'}}>
+              <TimeAgo date={props.completeDate} />
+            </div>
+            <button
+              className="WorkloadItem-secondaryButton"
+              onClick={() => {
+                clearTimeout(number);
+                props.onCancel()
+              }}
+              style={{ backgroundColor: '#D6C0FF', color: 'white', cursor: 'pointer',  borderColor: '#f1f1f1', padding: '8px'}}
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <div
           style={{
             maxWidth: "60px",
             display: "flex",
@@ -52,25 +75,6 @@ const WorkloadItem: React.SFC<WorkloadItemProps> = (props) => {
         >
           {props.status}
         </div>
-        {/* <span className="WorkloadItem-subHeading">Status: </span> */}
-      </div>
-      <div>
-        {props.status === "WORKING" ? (
-          <>
-            <div>
-              <TimeAgo date={props.completeDate} />
-            </div>
-            <button
-              className="WorkloadItem-secondaryButton"
-              onClick={props.onCancel}
-            >
-              Cancel
-            </button>
-          </>
-        ) : (
-          <span className="WorkloadItem-statusText">
-            {props.status.toLowerCase()}
-          </span>
         )}
       </div>
     </div>

@@ -8,21 +8,23 @@ import './App.css';
 class App extends PureComponent {
   render() {
     return (
-      <div>
+      <div style={{margin: '64px 192px', color: '#001eff'}}>
         <h1>CloudWork</h1>
-        <hr />
+        <hr className="layout-color" />
+        <h2>Workloads</h2>
+
         <div style={{display: 'flex'}}>
 
-
+        <div style={{flexBasis: 0, flexGrow: 2, paddingRight: '200px'}}>
+         
+          <WorkloadListContainer />
+        </div>
         <div style={{flexBasis: 0, flexGrow: 1}} >
           <WorkloadFormContainer />
         </div>
         {/* <hr /> */}
 
-        <div style={{flexBasis: 0, flexGrow: 1}}>
-          <h2>Workloads</h2>
-          <WorkloadListContainer />
-        </div>
+       
         </div>
      
       </div>
